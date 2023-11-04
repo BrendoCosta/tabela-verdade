@@ -38,4 +38,13 @@ describe('Source', () => {
 
         expect(source.peek()).toBe('x');
     });
+
+    it('Should return the entire alphabetic character sequence', () => {
+        const text = 'anExampleName1996 & b';
+        const source = new Source(text);
+        const regexExpession = new RegExp('[a-z]', 'i'); // Lower case alphabetic characters, case (i)nsensitive
+        let result = source.takeWhile(char => regexExpession.test(char));
+        expect(result).toEqual('anExampleName');
+    });
+
 })
