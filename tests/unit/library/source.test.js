@@ -39,6 +39,13 @@ describe('Source', () => {
         expect(source.peek()).toBe('x');
     });
 
+    it('Should skip while character is a white space', () => {
+        const text = '                   a & b';
+        const source = new Source(text);
+        source.skipWhile(char => (char === ' '));
+        expect(source.peek()).toEqual('a');
+    });
+
     it('Should return the entire alphabetic character sequence', () => {
         const text = 'anExampleName1996 & b';
         const source = new Source(text);
