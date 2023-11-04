@@ -7,10 +7,10 @@ describe('Source', () => {
         expect(source.span(2, 4)).toBe('cd');
     });
 
-    it('Should peek character without being bumped', () => {
-        const source = new Source('xy');
-
-        expect(source.peek()).toBe('x');
+    it('Should return the lower half the string', () => {
+        const text = '(a & b) | (b | c)';
+        const source = new Source(text);
+        expect(source.span(0, Math.floor((text.length - 1) / 2))).toEqual('(a & b) ');
     });
 
     it('Should peek character after being bumped', () => {
