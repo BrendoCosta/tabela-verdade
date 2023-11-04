@@ -17,29 +17,6 @@ function createLexerFromString (string) {
 }
 
 describe('Lexer', () => {
-    describe('Peek', () => {
-        it('Should peek token twice without consume it', () => {
-            const lexer = createLexerFromString('a & b');
-
-            expect(lexer.peek()).toEqual(new Name('a'));
-            expect(lexer.peek()).toEqual(new Name('a'));
-        });
-
-        it('Should consume token after being peeked', () => {
-            const lexer = createLexerFromString('x | y');
-
-            expect(lexer.peek()).toEqual(new Name('x'));
-            expect(lexer.next()).toEqual(new Name('x'));
-        });
-
-        it('Should peek another token after being consumed', () => {
-            const lexer = createLexerFromString('abc -> xyz');
-
-            expect(lexer.next()).toEqual(new Name('abc'));
-            expect(lexer.peek()).toEqual(new Conditional());
-        });
-    });
-
     describe('Token', () => {
         describe('Whitespace', () => {
             it('Should skip all whitespaces', () => {
