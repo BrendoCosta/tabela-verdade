@@ -39,18 +39,28 @@ import {
 } from './tokens';
 
 export function isWhiteSpace (ch) {
-    return ch === '\n' // New line
-            || ch === '\r' // Return
-            || ch === '\t' // Tab
-            || ch === '\v' // Vertical tab
-            || ch === '\b' // Backspace
-            || ch === '\f' // Form feed
-            || ch === '\x20' // Space
-            || ch === '\xA0'; // No-break space
+    // New line
+    return ch === '\n' ||
+    // Return
+            ch === '\r' ||
+    // Return
+            ch === '\t' ||
+    // Tab
+            ch === '\v' ||
+    // Vertical tab
+            ch === '\b' ||
+    // Backspace
+            ch === '\f' ||
+    // Form feed
+            ch === '\x20' ||
+    // Space
+            ch === '\xA0';
+    // No-break space
 }
 
 export function isNumber (ch) {
-    return ch >= '0' && ch <= '9';
+    // eslint-disable-next-line no-magic-numbers
+    return (typeof ch === 'string' && ch.length === 1) && (ch >= '0' && ch <= '9');
 }
 
 export function isAlphabetic (ch) {
@@ -62,6 +72,7 @@ export default class Lexer {
         this.source = source;
     }
 
+    // eslint-disable-next-line max-lines-per-function, max-statements, complexity
     next () {
         this.source.skipWhile(isWhiteSpace);
 
@@ -113,7 +124,7 @@ export default class Lexer {
                 return new ClosingParenthesis();
 
             default:
-                if (ch == null) {
+                if (ch === null || ch === undefined) {
                     return new End();
                 }
 
@@ -129,8 +140,7 @@ export default class Lexer {
                             return new Biconditional();
                         }
                     }
-                }
-                else if (ch === '-') {
+                } else if (ch === '-') {
                     this.source.bump();
 
                     if (this.source.peek() === '>') {
@@ -139,7 +149,8 @@ export default class Lexer {
                         return new Conditional();
                     }
                 } else if (isAlphabetic(ch)) {
-                    const name = this.source.takeWhile(ch => isAlphabetic(ch) || isNumber(ch));
+                    // eslint-disable-next-line no-shadow
+                    const name = this.source.takeWhile((ch) => isAlphabetic(ch) || isNumber(ch));
 
                     return new Name(name);
                 }
