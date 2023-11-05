@@ -50,12 +50,12 @@ export default class Generator {
     generate () {
         const expression = this.parser.parse();
 
-        const mapsWithPermutedVariables = this.prepareNames(expression);
-        const expressions = this.prepareExpressions(expression);
+        const mapsWithPermutedVariables = Generator.prepareNames(expression);
+        const expressions = Generator.prepareExpressions(expression);
 
         return [
-            this.generatePresentableExpressions(expressions),
-            this.generateValues(
+            Generator.generatePresentableExpressions(expressions),
+            Generator.generateValues(
                 mapsWithPermutedVariables,
                 expressions
             ),
