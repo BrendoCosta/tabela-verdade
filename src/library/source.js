@@ -5,7 +5,10 @@ export default class Source {
     }
 
     span (start, end) {
-        return this.input.slice(start, end);
+        return this.input.slice(
+            start,
+            end,
+        );
     }
 
     peek () {
@@ -16,18 +19,21 @@ export default class Source {
         this.offset += 1;
     }
 
-    takeWhile (f) {
+    takeWhile (fn) {
         const start = this.offset;
 
-        this.skipWhile(f);
+        this.skipWhile(fn);
 
         const end = this.offset;
 
-        return this.span(start, end);
+        return this.span(
+            start,
+            end,
+        );
     }
 
-    skipWhile (f) {
-        while (f(this.peek())) {
+    skipWhile (fn) {
+        while (fn(this.peek())) {
             this.bump();
         }
     }

@@ -13,7 +13,7 @@ export default class Generator {
         this.parser = parser;
     }
 
-    prepareNames (expression) {
+    static prepareNames (expression) {
         const extractor = new NamesExtractor();
 
         extractor.extract(expression);
@@ -23,7 +23,7 @@ export default class Generator {
         return exchanger.exchange(extractor.getNames());
     }
 
-    prepareExpressions (expression) {
+    static prepareExpressions (expression) {
         const extractor = new ExpressionsExtractor();
 
         extractor.extract(expression);
@@ -33,33 +33,32 @@ export default class Generator {
         return sorter.sort(extractor.getExpressions());
     }
 
-    generateValues (mapsWithPermutedVariables, expressions) {
-        return mapsWithPermutedVariables.map(mapWithPermutedVariables => {
+    static generateValues (mapsWithPermutedVariables, expressions) {
+        return mapsWithPermutedVariables.map((mapWithPermutedVariables) => {
             const interpreter = new Interpreter(mapWithPermutedVariables);
 
-            return expressions.map(expression => {
-                return interpreter.evaluate(expression);
-            });
+            return expressions.map((expression) => interpreter.evaluate(expression));
         });
     }
 
-    generatePresentableExpressions (expressions) {
+    static generatePresentableExpressions (expressions) {
         const expressionPresenterFactory = new ExpressionPresenterFactory();
 
-        return expressions
-            .map(expression => expressionPresenterFactory.create(expression))
-            .map(expression => expression.present());
+        return expressions.map((expression) => expressionPresenterFactory.create(expression)).map((expression) => expression.present());
     }
 
     generate () {
         const expression = this.parser.parse();
 
-        const mapsWithPermutedVariables = this.prepareNames(expression);
-        const expressions = this.prepareExpressions(expression);
+        const mapsWithPermutedVariables = Generator.prepareNames(expression);
+        const expressions = Generator.prepareExpressions(expression);
 
         return [
-            this.generatePresentableExpressions(expressions),
-            this.generateValues(mapsWithPermutedVariables, expressions),
+            Generator.generatePresentableExpressions(expressions),
+            Generator.generateValues(
+                mapsWithPermutedVariables,
+                expressions
+            ),
         ];
     }
 }

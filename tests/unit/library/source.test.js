@@ -10,13 +10,13 @@ describe('Source', () => {
     it('Should return the lower half the string', () => {
         const text = '(a & b) | (b | c)';
         const source = new Source(text);
-        expect(source.span(0, Math.floor((text.length - 1) / 2))).toEqual('(a & b) ');
+        expect(source.span(0, 8)).toEqual('(a & b) ');
     });
 
     it('Should return the upper half the string', () => {
         const text = '(a & b) | (b | c)';
         const source = new Source(text);
-        expect(source.span(Math.floor((text.length - 1) / 2), text.length)).toEqual('| (b | c)');
+        expect(source.span(8, 17)).toEqual('| (b | c)');
     });
 
     it('Should peek character after being bumped', () => {
