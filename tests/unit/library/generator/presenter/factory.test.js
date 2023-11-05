@@ -96,4 +96,9 @@ describe('Expression Presenter Factory', () => {
         )))
             .toThrowError('Unexpected binary expression');
     });
+
+    it('Should throw error if expression is null', () => {
+        expect(() => factory.create(null))
+            .toThrowError('Unexpected expression');
+    });
 });
