@@ -38,7 +38,7 @@ import {
     End,
 } from './tokens';
 
-function isWhiteSpace (ch) {
+export function isWhiteSpace (ch) {
     return ch === '\n' // New line
             || ch === '\r' // Return
             || ch === '\t' // Tab
@@ -49,41 +49,20 @@ function isWhiteSpace (ch) {
             || ch === '\xA0'; // No-break space
 }
 
-function isNumber (ch) {
+export function isNumber (ch) {
     return ch >= '0' && ch <= '9';
 }
 
-function isAlphabetic (ch) {
+export function isAlphabetic (ch) {
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 }
 
 export default class Lexer {
     constructor (source) {
-        this.peeked = null;
         this.source = source;
     }
 
-    take () {
-        const peeked = this.peeked;
-
-        this.peeked = null;
-
-        return peeked;
-    }
-
-    peek () {
-        if (this.peeked == null) {
-            this.peeked = this.next();
-        }
-
-        return this.peeked;
-    }
-
     next () {
-        if (this.peeked) {
-            return this.take();
-        }
-
         this.source.skipWhile(isWhiteSpace);
 
         const ch = this.source.peek();
