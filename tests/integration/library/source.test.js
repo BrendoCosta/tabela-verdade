@@ -12,7 +12,7 @@ function createLexerFromString(string) {
 describe('Source', () => {
     it('Lexer should be able to skip source\'s characters while they are whitespaces characters', () => {
         const lexer = createLexerFromString('            ¬a  ');
-        expect(lexer.next() instanceof Not).toBeTruthy();
+        expect(lexer.next()).toBeInstanceOf(Not);
     });
 
     it('Lexer should be able to bump source', () => {
@@ -29,8 +29,8 @@ describe('Source', () => {
     it('Lexer should return an End token after consuming all source\'s characters', () => {
         const lexer = createLexerFromString('a & b');
         lexer.source.peek = () => null;
-        expect(lexer.next() instanceof End).toBeTruthy();
+        expect(lexer.next()).toBeInstanceOf(End);
         lexer.source.peek = () => undefined;
-        expect(lexer.next() instanceof End).toBeTruthy();
+        expect(lexer.next()).toBeInstanceOf(End);
     });
 });
