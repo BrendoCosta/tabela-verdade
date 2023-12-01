@@ -1,6 +1,7 @@
 import Source from '../../../src/library/source';
 import Lexer from '../../../src/library/lexer';
 import {
+    End,
     Not,
 } from '../../../src/library/tokens';
 
@@ -23,5 +24,13 @@ describe('Source', () => {
     it('Lexer should be able to take source\'s characters while they are alphabetic characters', () => {
         const lexer = createLexerFromString('  somename  ');
         expect(lexer.next().name).toEqual('somename');
+    });
+
+    it('Lexer should return an End token after consuming all source\'s characters', () => {
+        const lexer = createLexerFromString('a & b');
+        lexer.source.peek = () => null;
+        expect(lexer.next() instanceof End).toBeTruthy();
+        lexer.source.peek = () => undefined;
+        expect(lexer.next() instanceof End).toBeTruthy();
     });
 });
