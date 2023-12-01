@@ -52,6 +52,20 @@ describe('Source', () => {
         expect(source.peek()).toEqual('a');
     });
 
+    it('Should bump when skipWhile argument evaluates to true', () => {
+        const text = 'a & b';
+        const source = new Source(text);
+        source.skipWhile(char => char == 'a' || char == '&' || char == 'b' || char == ' ');
+        expect(source.offset).toEqual(5);
+    });
+
+    it('Should not bump when skipWhile argument evaluates to false', () => {
+        const text = 'a & b';
+        const source = new Source(text);
+        source.skipWhile(char => false);
+        expect(source.offset).toEqual(0);
+    });
+
     it('Should return the entire alphabetic character sequence', () => {
         const text = 'anExampleName1996 & b';
         const source = new Source(text);
