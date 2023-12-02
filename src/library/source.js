@@ -12,7 +12,7 @@ export default class Source {
     }
 
     peek () {
-        return this.input[this.offset];
+        return [...this.input][this.offset];
     }
 
     bump () {
