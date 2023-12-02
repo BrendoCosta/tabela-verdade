@@ -79,7 +79,7 @@ describe('Source', () => {
         ["형제 | 자매", "형"],
         ["брат & !сестра", "б"],
         ["🍮 -> 😁", "🍮"]
-    ])('Should be aple to peek Unicode characters', (input, expected) => {
+    ])('Should be able to peek Unicode characters', (input, expected) => {
         let source = new Source(input);
         expect(source.peek()).toEqual(expected);
     });
@@ -89,7 +89,7 @@ describe('Source', () => {
         ["형제 | 자매", "제"],
         ["брат & !сестра", "р"],
         ["🍕🍫 -> 😁", "🍫"]
-    ])('Should be aple to bump Unicode characters', (input, expected) => {
+    ])('Should be able to bump Unicode characters', (input, expected) => {
         let source = new Source(input);
         source.bump();
         expect(source.peek()).toEqual(expected);
