@@ -74,4 +74,25 @@ describe('Source', () => {
         expect(result).toEqual('anExampleName');
     });
 
+    it.each([
+        ["兄弟 & 妹", "兄"],
+        ["형제 | 자매", "형"],
+        ["брат & !сестра", "б"],
+        ["🍮 -> 😁", "🍮"]
+    ])('Should be aple to peek Unicode characters', (input, expected) => {
+        let source = new Source(input);
+        expect(source.peek()).toEqual(expected);
+    });
+
+    it.each([
+        ["兄弟 & 妹", "弟"],
+        ["형제 | 자매", "제"],
+        ["брат & !сестра", "р"],
+        ["🍕🍫 -> 😁", "🍫"]
+    ])('Should be aple to bump Unicode characters', (input, expected) => {
+        let source = new Source(input);
+        source.bump();
+        expect(source.peek()).toEqual(expected);
+    });
+
 })
