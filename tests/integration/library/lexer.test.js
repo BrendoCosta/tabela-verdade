@@ -187,3 +187,71 @@ describe('Lexer', () => {
         });
     });
 });
+
+it('should call bump 3 times', () => {
+
+    const source = new Source('<->')
+    const spy = vi.spyOn(source, 'bump')
+    source.skipWhile(ch => ch === '<' || ch === '-' || ch === '>')
+    expect(spy).toHaveBeenCalledTimes(3);
+
+})
+
+it('should call peek 4 times', () => {
+
+    const source = new Source('<->')
+    const spy = vi.spyOn(source, 'peek')
+    source.skipWhile(ch => ch === '<' || ch === '-' || ch === '>')
+    expect(spy).toHaveBeenCalledTimes(4);
+
+})
+
+it('Empty string should call peek 1 time', () => {
+
+    const source = new Source('')
+    const spy = vi.spyOn(source, 'peek')
+    source.skipWhile(ch => ch === '<' || ch === '-' || ch === '>')
+    expect(spy).toHaveBeenCalledTimes(1);
+
+})
+
+it('should call bump 2 times', () => {
+
+    const source = new Source('->')
+    const spy = vi.spyOn(source, 'bump')
+    source.skipWhile(ch => ch === '-' || ch === '>')
+    expect(spy).toHaveBeenCalledTimes(2);
+
+})
+
+it('should call bump 1 times', () => {
+
+    const source = new Source('⇔')
+    const spy = vi.spyOn(source, 'bump')
+    source.skipWhile(ch => ch === '⇔')
+    expect(spy).toHaveBeenCalledTimes(1);
+
+})
+
+it('should not call bump', () => {
+
+    const source = new Source('#')
+    const spy = vi.spyOn(source, 'bump')
+    source.skipWhile(ch => ch != '#')
+    expect(spy).toHaveBeenCalledTimes(0);
+
+})
+
+it('should not be defined', () => {
+    const lexer = createLexerFromString('#');
+    expect(() => {lexer.next()}).toThrow('Unexpected character');
+})
+
+it('should call takewhile times', () => {
+
+    const source = new Source('a')
+    const spy = vi.spyOn(source, 'takeWhile')
+    source.takeWhile(ch => ch === 'a')
+    expect(spy).toHaveBeenCalledTimes(1);
+
+})
