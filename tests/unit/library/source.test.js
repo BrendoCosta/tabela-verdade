@@ -1,4 +1,3 @@
-import { rejects } from 'assert';
 import Source from '../../../src/library/source';
 
 describe('Source', () => {
