@@ -53,6 +53,14 @@ describe('Source', () => {
             }
         });*/
 
+        it('Should support iteration over ASCII and Unicode character', () => {
+            let source = new Source("ab 🍮cde🍕fghi🍫jk🍰lnmopqrstuvwxyzブラジル");
+            let iterator = source.input[Symbol.iterator]();
+            const spy = vi.spyOn(iterator, 'next');
+            for (let character of iterator) {}
+            expect(spy).toHaveBeenCalledTimes(36); // 35 characters + 1 EOF
+        });
+
         it('Should support the well-known iterating object protocol', () => {
             let source = new Source("a & b");
             let iterator = source.input[Symbol.iterator]();
