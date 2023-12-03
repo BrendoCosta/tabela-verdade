@@ -1,3 +1,5 @@
+/* eslint-disable max-lines-per-function, no-undef, max-statements */
+
 import Source from '../../../src/library/source';
 import Lexer from '../../../src/library/lexer';
 import PeekableLexer from '../../../src/library/lexer/peekable';
@@ -37,12 +39,12 @@ describe('Parser', () => {
 
     describe('Expression', () => {
         it('Should parse biconditional expression', () => {
-           const parser = createParserFromString('a <-> b');
+            const parser = createParserFromString('a <-> b');
 
-           expect(parser.parse()).toEqual(new ConditionalExpression(
-               new NameExpression('a'),
-               new NameExpression('b'),
-           ));
+            expect(parser.parse()).toEqual(new ConditionalExpression(
+                new NameExpression('a'),
+                new NameExpression('b'),
+            ));
         });
 
         it('Should parse conditional expression', () => {
@@ -198,12 +200,48 @@ describe('Parser', () => {
             ));
         });
 
-        it('Parenthesized exression should have precedence over any expression', () => {
-            const parser = createParserFromString('a & (b | c)');
+        it('Parenthesized exression should have precedence over or expression in left side', () => {
+            const parser = createParserFromString('(a <-> b) | c');
+
+            expect(parser.parse()).toEqual(new OrExpression(
+                new BiconditionalExpression(
+                    new NameExpression('a'),
+                    new NameExpression('b'),
+                ),
+                new NameExpression('c'),
+            ));
+        });
+
+        it('Parenthesized exression should have precedence over or expression in right side', () => {
+            const parser = createParserFromString('a | (b <-> c)');
+
+            expect(parser.parse()).toEqual(new OrExpression(
+                new NameExpression('a'),
+                new BiconditionalExpression(
+                    new NameExpression('b'),
+                    new NameExpression('c'),
+                ),
+            ));
+        });
+
+        it('Parenthesized exression should have precedence over and expression in left side', () => {
+            const parser = createParserFromString('(a <-> b) & c');
+
+            expect(parser.parse()).toEqual(new AndExpression(
+                new BiconditionalExpression(
+                    new NameExpression('a'),
+                    new NameExpression('b'),
+                ),
+                new NameExpression('c'),
+            ));
+        });
+
+        it('Parenthesized exression should have precedence over and expression in right side', () => {
+            const parser = createParserFromString('a & (b <-> c)');
 
             expect(parser.parse()).toEqual(new AndExpression(
                 new NameExpression('a'),
-                new OrExpression(
+                new BiconditionalExpression(
                     new NameExpression('b'),
                     new NameExpression('c'),
                 ),
