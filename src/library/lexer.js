@@ -124,7 +124,7 @@ export default class Lexer {
                 return new ClosingParenthesis();
 
             default:
-                if (ch === null || ch === undefined) {
+                if (ch === undefined) {
                     return new End();
                 }
 
