@@ -1,3 +1,4 @@
+import { rejects } from 'assert';
 import Source from '../../../src/library/source';
 
 describe('Source', () => {
@@ -52,6 +53,12 @@ describe('Source', () => {
         expect(source.peek()).toEqual('a');
     });
 
+    it('Should increment offset after bump', () => {
+        const source = new Source("abcd");
+        source.bump();
+        expect(source.offset).toEqual(1);
+    });
+
     it('Should bump when skipWhile argument evaluates to true', () => {
         const text = 'a & b';
         const source = new Source(text);
@@ -93,6 +100,28 @@ describe('Source', () => {
         let source = new Source(input);
         source.bump();
         expect(source.peek()).toEqual(expected);
+    });
+
+    it('Should call bump after skipWhile with a function returning true', () => {
+
+        const source = new Source('wwwxyz');
+        const spy = vi.spyOn(source, 'bump');
+        source.skipWhile(ch => {
+            return ch === 'w';
+        });
+        expect(spy).toHaveBeenCalledTimes(3);
+
+    });
+
+    it('Should not call bump after skipWhile with a function returning false', () => {
+
+        const source = new Source('wwwxyz');
+        const spy = vi.spyOn(source, 'bump');
+        source.skipWhile(ch => {
+            return ch === '2';
+        });
+        expect(spy).toHaveBeenCalledTimes(0);
+
     });
 
 })
