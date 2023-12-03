@@ -53,4 +53,12 @@ describe('Expression sorted', () => {
             ),
         ])
     });
+    it('Should clone expression array', () => {
+        const sorter = new ExpressionsSorter();
+        const original = [
+            new NameExpression('a'),
+            new NameExpression('b'),
+        ];
+        expect(sorter.sort(original)).not.toBe(original);
+    });
 });
