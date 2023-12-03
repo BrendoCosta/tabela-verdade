@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import NamesExchanger from '../../../../../src/library/generator/names/exchanger';
 
 describe('Name exchanger', () => {
@@ -7,10 +8,10 @@ describe('Name exchanger', () => {
         expect(exchanger.exchange([])).toEqual([]);
     });
 
-    it('Should exchange the values of the names', () => {
+    it('Should exchange values', () => {
         const exchanger = new NamesExchanger();
 
-        expect(exchanger.exchange(['a', 'b', 'c'])).toEqual([
+        expect(exchanger.exchange(['a', 'b', 'c'])).toStrictEqual([
             {a: true, b: true, c: true},
             {a: true, b: true, c: false},
             {a: true, b: false, c: true},
