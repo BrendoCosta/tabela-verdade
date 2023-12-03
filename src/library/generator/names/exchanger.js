@@ -21,9 +21,7 @@ export default class NamesExchanger {
                 trueSlice.push([true, ...permutations[j]]);
                 falseSlice.push([false, ...permutations[j]]);
             }
-
-            console.log(trueSlice)
-
+            
             permutations = [
                 ...trueSlice,
                 ...falseSlice,
