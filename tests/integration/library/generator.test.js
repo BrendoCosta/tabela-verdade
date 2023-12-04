@@ -2,9 +2,7 @@ import Source from '../../../src/library/source';
 import Lexer from '../../../src/library/lexer';
 import PeekableLexer from '../../../src/library/lexer/peekable';
 import Parser from '../../../src/library/parser';
-
 import Generator from '../../../src/library/generator';
-import generate from '@babel/generator';
 
 function createGeneratorFromString (string) {
     return new Generator(new Parser(new PeekableLexer(new Lexer(new Source(string)))));
