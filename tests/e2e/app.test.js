@@ -155,3 +155,65 @@ test('Should be able to switch user interface language', async ({ page }) => {
     const header = page.locator('h1');
     await expect(await header.innerText()).toEqual(enUS.headerTitle);
 });
+
+test.describe('Mobile', () => {
+    test.use({ viewport: { width: 390, height: 844 } });
+    
+    test('Should generate the conjunction truth table', async ({ page }) => {
+        const input = page.getByRole('textbox');
+        await input.fill('a & b');
+        
+        await expect(await getTableData(page)).toEqual([
+            [true, true, true],
+            [true, false, false],
+            [false, true, false],
+            [false, false, false]
+        ]);
+    });
+    
+    test('Should generate the disjunction truth table', async ({ page }) => {
+        const input = page.getByRole('textbox');
+        await input.fill('a | b');
+        
+        await expect(await getTableData(page)).toEqual([
+            [true, true, true],
+            [true, false, true],
+            [false, true, true],
+            [false, false, false]
+        ]);
+    });
+    
+    test('Should generate the negation truth table', async ({ page }) => {
+        const input = page.getByRole('textbox');
+        await input.fill('!a');
+        
+        await expect(await getTableData(page)).toEqual([
+            [true, false],
+            [false, true]
+        ]);
+    });
+    
+    test('Should generate the conditional truth table', async ({ page }) => {
+        const input = page.getByRole('textbox');
+        await input.fill('a -> b');
+        
+        await expect(await getTableData(page)).toEqual([
+            [true, true, true],
+            [true, false, false],
+            [false, true, true],
+            [false, false, true],
+        ]);
+    });
+    
+    test('Should generate the biconditional truth table', async ({ page }) => {
+        const input = page.getByRole('textbox');
+        await input.fill('a <-> b');
+        
+        await expect(await getTableData(page)).toEqual([
+            [true, true, true],
+            [true, false, false],
+            [false, true, false],
+            [false, false, true],
+        ]);
+    });
+});
