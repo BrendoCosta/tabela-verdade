@@ -4,6 +4,7 @@ import PeekableLexer from '../../../src/library/lexer/peekable';
 import Parser from '../../../src/library/parser';
 
 import Generator from '../../../src/library/generator';
+import generate from '@babel/generator';
 
 function createGeneratorFromString (string) {
     return new Generator(new Parser(new PeekableLexer(new Lexer(new Source(string)))));
@@ -26,4 +27,13 @@ describe('Generator', () => {
                 [false, false, false, false, true]]
         ]);
     });
+
+    it('Should generate values for single character variable', () => {
+        const generator = createGeneratorFromString('a');
+        
+        expect(generator.generate()).toEqual([
+            ['a'],
+            [[true], [false]]
+        ]);  
+    }); 
 })
