@@ -43,7 +43,7 @@ export default function TruthTable ({
                     {enrichRowsWithKeys(rows).map(({ key, cells }) => (
                         <tr key={key} className="transition even:bg-gray-200 hover:bg-primary hover:text-white">
                             {enrichCellsWithKeys(cells).map(({ key, value }) => (
-                                <td key={key} className="py-2 px-6 text-center font-medium text-sm">
+                                <td key={key} data-value={value} className="py-2 px-6 text-center font-medium text-sm">
                                     <span>
                                         {value ? truthTableTrueCellLabel : truthTableFalseCellLabel}
                                     </span>
