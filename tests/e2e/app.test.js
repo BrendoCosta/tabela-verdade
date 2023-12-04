@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 import enUS from '~/locales/en-us';
 
-test.beforeEach(({ page }) => page.goto('/'));
+test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('load');
+});
 
 async function getTableData(page) {
     const rowsLocator = await page.locator('tbody').locator('tr');
@@ -154,6 +157,91 @@ test('Should be able to switch user interface language', async ({ page }) => {
     await page.waitForURL('/en-US');
     const header = page.locator('h1');
     await expect(await header.innerText()).toEqual(enUS.headerTitle);
+});
+
+test('Evaluates the generation of an arbitrary set of inputs', async ({ page }) => {
+    const testCases = [
+        // Valid
+        {
+            input: 'a <-> b',
+            expected: [
+                [true, true, true],
+                [true, false, false],
+                [false, true, false],
+                [false, false, true],
+            ]
+        },
+        {
+            input: 'a -> b',
+            expected: [
+                [true, true, true],
+                [true, false, false],
+                [false, true, true],
+                [false, false, true],
+            ]
+        },
+        {
+            input: '!a',
+            expected: [
+                [true, false],
+                [false, true]
+            ]
+        },
+        {
+            input: 'a | b',
+            expected: [
+                [true, true, true],
+                [true, false, true],
+                [false, true, true],
+                [false, false, false]
+            ]
+        },
+        {
+            input: 'a',
+            expected: [
+                [true],
+                [false]
+            ]
+        },
+        {
+            input: 'a'.repeat(1000),
+            expected: [
+                [true],
+                [false]
+            ]
+        },
+        // Invalid
+        {
+            input: '🍮',
+            expected: []
+        },
+        {
+            input: ' ',
+            expected: []
+        },
+        {
+            input: ' '.repeat(1000),
+            expected: []
+        },
+        {
+            input: '42353',
+            expected: []
+        },
+        {
+            input: 'The quick brown fox jumps over the lazy dog',
+            expected: []
+        },
+        {
+            input: 'x '.repeat(1000),
+            expected: []
+        },
+    ];
+    for (let tCase of testCases) {
+        const input = page.getByRole('textbox');
+        await input.fill(tCase.input);
+        expect(await getTableData(page)).toEqual(tCase.expected);
+        await input.clear();
+    }
 });
 
 test.describe('Mobile', () => {
